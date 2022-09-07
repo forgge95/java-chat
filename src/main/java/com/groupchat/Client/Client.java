@@ -88,9 +88,11 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your username to connect: ");
         String userName = scanner.nextLine();
+        System.out.println("Enter chat port to connect: ");
+        int socketPort = scanner.nextInt();
         scanner.close();
         System.out.println("Successfully connected!");
-        Socket socket = new Socket("localhost",1010);
+        Socket socket = new Socket("localhost",socketPort);
         Client client = new Client(socket, userName);
         client.listenerForMessages();
         client.sendMessage();

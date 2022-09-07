@@ -14,6 +14,7 @@ public class Server {
     }
 
     public void startServer() {
+        System.out.println("Connected to socket: " + serverSocket.getLocalPort());
         try {
 
 
@@ -45,7 +46,7 @@ public class Server {
     }
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(1010);
+        ServerSocket serverSocket = new ServerSocket(0);
         Server server = new Server(serverSocket);
         server.startServer();
     }
