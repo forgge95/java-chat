@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import com.groupchat.server.Server;
+
 public class Client {
     private Socket socket;
     private BufferedReader bufferedReader;
@@ -84,12 +86,28 @@ public class Client {
         
     }
 
+    private static boolean checkPort(int port){
+        boolean available = false;
+        for (int currentPort : Server.occupiedSockets) {
+            if(port == currentPort) {
+                available = true;
+                break;
+            }
+        }
+        return available;
+    }
+
     public static void main(String[] args) throws UnknownHostException, IOException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your username to connect: ");
         String userName = scanner.nextLine();
+        System.out.println("List of available ports: " + Server.occupiedSockets);
         System.out.println("Enter chat port to connect: ");
         int socketPort = scanner.nextInt();
+        while(!checkPort(socketPort)){
+            System.out.println("Entered port not available, enter new one: ");
+            socketPort = scanner.nextInt();
+        }
         scanner.close();
         System.out.println("Successfully connected!");
         Socket socket = new Socket("localhost",socketPort);

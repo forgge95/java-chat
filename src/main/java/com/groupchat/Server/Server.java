@@ -1,14 +1,15 @@
-package com.groupchat.Server;
+package com.groupchat.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import com.groupchat.Client.ClientHandler;
 
 public class Server {
     private ServerSocket serverSocket;
-
+    public static ArrayList<Integer> occupiedSockets = new ArrayList<>();
     public Server(ServerSocket serverSocket){
         this.serverSocket = serverSocket;
     }
@@ -30,8 +31,7 @@ public class Server {
 
 
         } catch (Exception e) {
-
-
+            closeServerSocket();
         }
     }
 
@@ -40,6 +40,7 @@ public class Server {
             if(serverSocket!=null){
                 serverSocket.close();
             }
+            Server.occupiedSockets.remove(serverSocket.getLocalPort());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,6 +48,7 @@ public class Server {
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(0);
+        Server.occupiedSockets.add(serverSocket.getLocalPort());
         Server server = new Server(serverSocket);
         server.startServer();
     }
