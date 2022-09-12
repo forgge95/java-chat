@@ -86,30 +86,15 @@ public class Client {
         
     }
 
-    private static boolean checkPort(int port){
-        boolean available = false;
-        for (int currentPort : Server.occupiedSockets) {
-            if(port == currentPort) {
-                available = true;
-                break;
-            }
-        }
-        return available;
-    }
-
     public static void main(String[] args) throws UnknownHostException, IOException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your username to connect: ");
         String userName = scanner.nextLine();
-        System.out.println("List of available ports: " + Server.occupiedSockets);
+        System.out.println("List of available ports: " + Server.portList);
         System.out.println("Enter chat port to connect: ");
         int socketPort = scanner.nextInt();
-        while(!checkPort(socketPort)){
-            System.out.println("Entered port not available, enter new one: ");
-            socketPort = scanner.nextInt();
-        }
         scanner.close();
-        System.out.println("Successfully connected!");
+        System.out.println("Connected!");
         Socket socket = new Socket("localhost",socketPort);
         Client client = new Client(socket, userName);
         client.listenerForMessages();
